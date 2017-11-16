@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        ul{list-style: none;margin:10px auto;padding:0}
+        ul li{text-align: center;background: #ffffff;display: inline-block;width:85px;height:30px;line-height: 30px;border: 1px solid #D4D8D5;border-radius: 5px;margin:5px;}
+        a{text-decoration: none;}
+    </style>
+</head>
+<body>
+        <ul> 
+            <li><a href="#/" >turn white</a></li> 
+            <li><a href="#/orange">turn orange</a></li> 
+            <li><a href="#/purple">turn purple</a></li> 
+        </ul> 
+
+        <script>
+            function Router() {
+                this.routes = {};
+                this.currentUrl = '';
+            }
+            Router.prototype.route = function(path, callback) {
+                this.routes[path] = callback || function(){};
+            };
+            Router.prototype.refresh = function() {
+                this.currentUrl = location.hash.slice(1) || '/';
+                this.routes[this.currentUrl]();
+            };
+            Router.prototype.init = function() {
+                window.addEventListener('load', this.refresh.bind(this), false);
+                window.addEventListener('hashchange', this.refresh.bind(this), false);
+            }
+            
+            window.Router = new Router();
+            window.Router.init();
+            var content = document.querySelector('body');
+            // change Page anything
+            function changeBgColor(color) {
+                content.style.backgroundColor = color;
+            }
+            Router.route('/', function() {
+                changeBgColor('white');
+            });
+            Router.route('/orange', function() {
+                changeBgColor('orange');
+            });
+            Router.route('/purple', function() {
+                changeBgColor('purple');
+            });
+
+        
+        </script>
+</body>
+</html>
