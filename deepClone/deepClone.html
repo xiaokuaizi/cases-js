@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <style>
+        textarea{width:100%}
+        .clickFun{float: right;text-decoration: underline;color:blue;}
+    </style>
+</head>
+<body>
+    <h2>深度克隆的方法</h2>
+    <section>
+        <span class="clickFun">点击查看控制台</span>
+        <h3>方法一：JSON</h3>
+        <textarea class="scriptTxt" name="" id="" cols="30" rows="10" placeholder="
+        var obj = { 
+            a: 1,
+            b:[1,2],
+            c:{
+                name:'d',
+                d:[3],
+                e:function(){console.log(1)}
+            }
+        }
+        var newObj = JSON.parse(JSON.stringify(obj));
+        "></textarea>
+    </section>
+    <section>
+        <span class="clickFun">点击查看控制台</span>
+        <h3>方法二：递归</h3>
+        <textarea class="scriptTxt" name="" id="" cols="30" rows="10" placeholder="
+        var deepCopy = function(obj){
+            
+            var newObj;
+            if(Object.prototype.toString.call(obj) === '[object Object]'){
+                newObj = {};
+                for( var i in obj){
+                    newObj[i] = arguments.callee(obj[i]);
+                }
+            }else if(Object.prototype.toString.call(obj) === '[object Array]'){
+                newObj = [];
+                for( var i in obj){
+                    newObj.push(arguments.callee(obj[i]));
+                }
+            }else{
+                newObj = obj;
+            }
+                return newObj;
+            };
+        
+            var obj = { 
+                    a: 1,
+                    b:[1,2],
+                    c:{
+                        name:'dd',
+                        d:[3],
+                        e:function(){console.log(1)}
+                    }
+                }
+        
+            var newObj = deepCopy(obj)
+        "></textarea>
+    </section>
+    <section> 
+        <span class="clickFun">点击查看控制台</span>  
+        <h3>方法三： $.extend</h3>
+        <textarea class="scriptTxt" name="" id="" cols="30" rows="10" placeholder="
+        var obj = { 
+            a: 1,
+            b:[1,2],
+            c:{
+                name:'ddd',
+                d:[3],
+                e:function(){console.log(1)}
+            }
+        }
+        var newObj =  $.extend(true,{},obj)
+        "></textarea>
+    </section> 
+    <script>
+        var $clickFun = $(".clickFun");
+        $clickFun.click(function(){
+            console.log()
+            var str = $(this).parent().find(".scriptTxt").attr("placeholder");
+            eval(str)
+            console.log('方法'+($clickFun.index(this)+1)+':  ', newObj)
+        })
+    </script>
+</body>
+</html>
